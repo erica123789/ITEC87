@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>superStore</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #E7F0DC; 
+    color: #597445;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #FFFDCB; 
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+header, nav {
+    background-color: #658147; 
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+#logo {
+    width: 100px;
+    height: 100px;
+    background-color: #3ABEF9; 
+    border-radius: 50%;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+nav a:hover {
+    background-color: #729762;
+    border-radius: 5px;
+}
+
+.section, .cart-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border: 2px solid #658147;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #E7F0DC; 
+}
+
+.product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color:  #597445;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color:#658147; 
+}
+button.calculate-change {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color:  #597445; 
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+button.calculate-change:hover {
+    background-color:#658147; 
+}
+#restockModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #FFFDCB;
+    border: 2px solid #3572EF; 
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.cart-container {
+    text-align: center;
+    margin-top: 20px;
+    border: 2px solid #658147;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #E7F0DC;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#cart {
+    list-style-type: none;
+    padding: 0;
+}
+
+#cart li {
+    margin: 5px 0;
+    background-color: #729762;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#cart button {
+    margin-left: 10px;
+    background-color: #658147;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+#discount, #money {
+    margin: 10px 0;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>superStore</h1>
+        <img id="logo" src="log.png" alt="Store Logo">
+    </header>
+
+    <nav>
+        <a href="#jeans-section">Jeans</a>
+        <a href="#tops-section">Tops</a>
+        <a href="#tshirts-section">T-shirts</a>
+        <a href="#perfume-section">Perfume</a>
+        <a href="#toys-section">Toys</a>
+    </nav>
+
+    <!-- Jeans Section -->
+    <div id="jeans-section" class="section">
+        <h2>Jeans</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <caption>Jeans</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th></th>
+                        <th>Add to Cart</th>
+                        <th>Restock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="product-image" src="short.jpeg" alt="Shorts"></td>
+                        <td>Shorts</td>
+                        <td id="shorts-quantity">10</td>
+                        <td id="shorts-price">50</td>
+                        <td>Small</td>
+                        <td><input type="number" id="shorts-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Shorts', 'shorts')">Add</button></td>
+                        <td><button onclick="openRestockModal('shorts')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="blue.jpeg" alt="Blue Pants"></td>
+                        <td>Blue Pants</td>
+                        <td id="blue-pants-quantity">15</td>
+                        <td id="blue-pants-price">60</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="blue-pants-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Blue Pants', 'blue-pants')">Add</button></td>
+                        <td><button onclick="openRestockModal('blue-pants')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="black.jpeg" alt="Black Jeans"></td>
+                        <td>Black Jeans</td>
+                        <td id="black-jeans-quantity">20</td>
+                        <td id="black-jeans-price">80</td>
+                        <td>Large</td>
+                        <td><input type="number" id="black-jeans-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Black Jeans', 'black-jeans')">Add</button></td>
+                        <td><button onclick="openRestockModal('black-jeans')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="white.jpeg" alt="White Pants"></td>
+                        <td>White Pants</td>
+                        <td id="white-pants-quantity">18</td>
+                        <td id="white-pants-price">70</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="white-pants-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('White Pants', 'white-pants')">Add</button></td>
+                        <td><button onclick="openRestockModal('white-pants')">Restock Items</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tops Section -->
+    <div id="tops-section" class="section">
+        <h2>Tops</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <caption>Tops</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th></th>
+                        <th>Add to Cart</th>
+                        <th>Restock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="product-image" src="tank.webp" alt="Tank Tops"></td>
+                        <td>Tank Tops</td>
+                        <td id="tank-tops-quantity">12</td>
+                        <td id="tank-tops-price">45</td>
+                        <td>Small</td>
+                        <td><input type="number" id="tank-tops-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Tank Tops', 'tank-tops')">Add</button></td>
+                        <td><button onclick="openRestockModal('tank-tops')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="blouse.webp" alt="Blouse"></td>
+                        <td>Blouse</td>
+                        <td id="blouse-quantity">15</td>
+                        <td id="blouse-price">55</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="blouse-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Blouse', 'blouse')">Add</button></td>
+                        <td><button onclick="openRestockModal('blouse')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="sando.webp" alt="Sando"></td>
+                        <td>Sando</td>
+                        <td id="sando-quantity">20</td>
+                        <td id="sando-price">35</td>
+                        <td>Small</td>
+                        <td><input type="number" id="sando-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Sando', 'sando')">Add</button></td>
+                        <td><button onclick="openRestockModal('sando')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="tube.jpeg" alt="Tube Tops"></td>
+                        <td>Tube Tops</td>
+                        <td id="tube-tops-quantity">18</td>
+                        <td id="tube-tops-price">40</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="tube-tops-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Tube Tops', 'tube-tops')">Add</button></td>
+                        <td><button onclick="openRestockModal('tube-tops')">Restock Items</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- T-shirts Section -->
+    <div id="tshirts-section" class="section">
+        <h2>T-shirts</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <caption>T-shirts</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th></th>
+                        <th>Add to Cart</th>
+                        <th>Restock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="product-image" src="shirt1.jpeg" alt="Navy Blue T-shirt"></td>
+                        <td>Navy Blue T-shirt</td>
+                        <td id="navy-tshirt-quantity">25</td>
+                        <td id="navy-tshirt-price">30</td>
+                        <td>Large</td>
+                        <td><input type="number" id="navy-tshirt-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Navy Blue T-shirt', 'navy-tshirt')">Add</button></td>
+                        <td><button onclick="openRestockModal('navy-tshirt')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="shirt2.jpeg" alt="Black T-shirt"></td>
+                        <td>Black T-shirt</td>
+                        <td id="black-tshirt-quantity">20</td>
+                        <td id="black-tshirt-price">35</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="black-tshirt-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Black T-shirt', 'black-tshirt')">Add</button></td>
+                        <td><button onclick="openRestockModal('black-tshirt')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="shirt3.jpeg" alt="Yellow T-shirt"></td>
+                        <td>Yellow T-shirt</td>
+                        <td id="yellow-tshirt-quantity">15</td>
+                        <td id="yellow-tshirt-price">25</td>
+                        <td>Small</td>
+                        <td><input type="number" id="yellow-tshirt-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Yellow T-shirt', 'yellow-tshirt')">Add</button></td>
+                        <td><button onclick="openRestockModal('yellow-tshirt')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="shirt4.jpg" alt="Green T-shirt"></td>
+                        <td>Green T-shirt</td>
+                        <td id="green-tshirt-quantity">18</td>
+                        <td id="green-tshirt-price">30</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="green-tshirt-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Green T-shirt', 'green-tshirt')">Add</button></td>
+                        <td><button onclick="openRestockModal('green-tshirt')">Restock Items</button></td>
+                    </tr>
+			<tr>
+                        <td><img class="product-image" src="shirt5.jpeg" alt="Brown T-shirt"></td>
+                        <td>Brown T-shirt</td>
+                        <td id="brown-tshirt-quantity">18</td>
+                        <td id="brown-tshirt-price">80</td>
+                        <td>Medium</td>
+                        <td><input type="number" id="brown-tshirt-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Brown T-shirt', 'brown-tshirt')">Add</button></td>
+                        <td><button onclick="openRestockModal('brown-tshirt')">Restock Items</button></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Perfume Section -->
+    <div id="perfume-section" class="section">
+        <h2>Perfume</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <caption>Perfume</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                        <th>Add to Cart</th>
+                        <th>Restock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="product-image" src="p1.jpeg" alt="Brave Man"></td>
+                        <td>Brave Man</td>
+                        <td id="brave-man-quantity">10</td>
+                        <td id="brave-man-price">120</td>
+                        <td><input type="number" id="brave-man-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Brave Man', 'brave-man')">Add</button></td>
+                        <td><button onclick="openRestockModal('brave-man')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="p2.jpeg" alt="Coco Chanel"></td>
+                        <td>Coco Chanel</td>
+                        <td id="coco-chanel-quantity">12</td>
+                        <td id="coco-chanel-price">150</td>
+                        <td><input type="number" id="coco-chanel-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Coco Chanel', 'coco-chanel')">Add</button></td>
+                        <td><button onclick="openRestockModal('coco-chanel')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="p3.jpeg" alt="Chance Chanel"></td>
+                        <td>Chance Chanel</td>
+                        <td id="chance-chanel-quantity">15</td>
+                        <td id="chance-chanel-price">170</td>
+                        <td><input type="number" id="chance-chanel-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Chance Chanel', 'chance-chanel')">Add</button></td>
+                        <td><button onclick="openRestockModal('chance-chanel')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="p4.jpeg" alt="My Way"></td>
+                        <td>My Way</td>
+                        <td id="my-way-quantity">20</td>
+                        <td id="my-way-price">180</td>
+                        <td><input type="number" id="my-way-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('My Way', 'my-way')">Add</button></td>
+                        <td><button onclick="openRestockModal('my-way')">Restock Items</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Toys Section -->
+    <div id="toys-section" class="section">
+        <h2>Toys</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <caption>Toys</caption>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Age Group</th>
+                        <th></th>
+                        <th>Add to Cart</th>
+                        <th>Restock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img class="product-image" src="toy1.jpg" alt="Disney Toy"></td>
+                        <td>Disney Toy</td>
+                        <td id="disney-toy-quantity">30</td>
+                        <td id="disney-toy-price">20</td>
+                        <td>3-5 years</td>
+                        <td><input type="number" id="disney-toy-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Disney Toy', 'disney-toy')">Add</button></td>
+                        <td><button onclick="openRestockModal('disney-toy')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="toy2.jpg" alt="Barbie Toy"></td>
+                        <td>Barbie Toy</td>
+                        <td id="barbie-toy-quantity">25</td>
+                        <td id="barbie-toy-price">15</td>
+                        <td>6-8 years</td>
+                        <td><input type="number" id="barbie-toy-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Barbie Toy', 'barbie-toy')">Add</button></td>
+                        <td><button onclick="openRestockModal('barbie-toy')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="toy3.jpg" alt="Doraemon"></td>
+                        <td>Doraemon</td>
+                        <td id="doraemon-quantity">28</td>
+                        <td id="doraemon-price">25</td>
+                        <td>3-5 years</td>
+                        <td><input type="number" id="doraemon-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Doraemon', 'doraemon')">Add</button></td>
+                        <td><button onclick="openRestockModal('doraemon')">Restock Items</button></td>
+                    </tr>
+                    <tr>
+                        <td><img class="product-image" src="toy4.jpg" alt="Tom and Jerry"></td>
+                        <td>Tom and Jerry</td>
+                        <td id="tom-and-jerry-quantity">22</td>
+                        <td id="tom-and-jerry-price">30</td>
+                        <td>6-8 years</td>
+                        <td><input type="number" id="tom-and-jerry-add-quantity" placeholder="Enter quantity to add"></td>
+                        <td><button onclick="addToCart('Tom and Jerry', 'tom-and-jerry')">Add</button></td>
+                        <td><button onclick="openRestockModal('tom-and-jerry')">Restock Items</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="restockModal">
+        <h1>Restock Item</h1>
+        <label for="restock-quantity">Enter quantity to restock:</label>
+        <input type="number" id="restock-quantity" min="0" value="0">
+        <div class="button-container">
+            <button id="confirmRestock" class="btn btn-primary">RESTOCK</button>
+            <button onclick="closeRestockModal()" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div class="cart-container">
+        <h2>Cart</h2>
+        <ul id="cart"></ul>
+        <select id="discount" onchange="applyDiscount()" class="form-control">
+            <option value="0">No Discount</option>
+            <option value="0.1">Student (10%)</option>
+            <option value="0.2">Senior (20%)</option>
+            <option value="0.3">PWD (30%)</option>
+        </select>
+
+        <h3>Total: ₱<span id="total">0</span></h3>
+        <input type="number" id="money" class="form-control" placeholder="Enter amount paid">
+        <button onclick="calculateChange()" class="calculate-change">Calculate Change</button>
+        <p id="change"></p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    let currentItem = '';
+    let cart = [];
+    let total = 0;
+    let discountedTotal = 0;
+
+    function openRestockModal(item) {
+        currentItem = item;
+        document.getElementById('restock-quantity').value = 0; 
+        document.getElementById('restockModal').style.display = 'block';
+    }
+
+    function closeRestockModal() {
+        document.getElementById('restockModal').style.display = 'none';
+    }
+
+    document.getElementById('confirmRestock').addEventListener('click', function() {
+        restockItem(currentItem);
+    });
+
+    function restockItem(item) {
+        const quantityInput = document.getElementById('restock-quantity');
+        const quantityToAdd = parseInt(quantityInput.value);
+        if (!isNaN(quantityToAdd) && quantityToAdd >= 0) { t
+            const quantityElement = document.getElementById(`${item}-quantity`);
+            const currentQuantity = parseInt(quantityElement.innerText);
+            const newQuantity = currentQuantity + quantityToAdd;
+            quantityElement.innerText = newQuantity;
+            alert(`${quantityToAdd} items of ${item} restocked successfully!`);
+            closeRestockModal();
+        } else {
+            alert("Invalid input. Please enter a valid quantity.");
+        }
+    }
+
+    function addToCart(displayedName, internalName) {
+        const addQuantityInput = document.getElementById(`${internalName}-add-quantity`);
+        const quantityToAdd = parseInt(addQuantityInput.value);
+        if (!isNaN(quantityToAdd) && quantityToAdd > 0) {
+            const quantityElement = document.getElementById(`${internalName}-quantity`);
+            const currentQuantity = parseInt(quantityElement.innerText);
+            const price = parseInt(document.getElementById(`${internalName}-price`).innerText);
+            if (currentQuantity >= quantityToAdd) {
+                quantityElement.innerText = currentQuantity - quantityToAdd;
+
+                const existingCartItem = cart.find(cartItem => cartItem.item === displayedName);
+                if (existingCartItem) {
+                    existingCartItem.quantity += quantityToAdd;
+                    existingCartItem.totalPrice += quantityToAdd * price;
+                } else {
+                    cart.push({ item: displayedName, price: price, quantity: quantityToAdd, totalPrice: quantityToAdd * price });
+                }
+                total += quantityToAdd * price;
+                updateCart(); // Call updateCart() to reflect the changes in the cart and total cost
+                addQuantityInput.value = '';
+            } else {
+                alert(`Insufficient quantity for ${displayedName}.`);
+            }
+        } else {
+            alert("Invalid input. Please enter a valid quantity.");
+        }
+    }
+
+    function removeItem(index) {
+        const cartItem = cart[index];
+        const quantityElement = document.getElementById(`${cartItem.item.toLowerCase().replace(/\s/g, '-')}-quantity`);
+        const currentQuantity = parseInt(quantityElement.innerText);
+        quantityElement.innerText = currentQuantity + cartItem.quantity;
+
+        total -= cartItem.totalPrice;
+        cart.splice(index, 1);
+        applyDiscount();
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartList = document.getElementById('cart');
+        const totalElement = document.getElementById('total');
+        total = 0; // Reset total before recalculating
+        cartList.innerHTML = '';
+        cart.forEach((cartItem, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${cartItem.item} - ₱${cartItem.price} x ${cartItem.quantity} = ₱${cartItem.totalPrice.toFixed(2)}`;
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.classList.add('btn', 'btn-danger');
+            removeButton.onclick = () => removeItem(index);
+
+            li.appendChild(removeButton);
+            cartList.appendChild(li);
+            total += cartItem.totalPrice; // Calculate total for all items in the cart
+        });
+        totalElement.textContent = total.toFixed(2); // Update total in the UI
+        applyDiscount(); // Recalculate discounted total after updating the cart
+    }
+
+    function calculateChange() {
+        const money = parseFloat(document.getElementById('money').value);
+        const changeElement = document.getElementById('change');
+        if (money >= discountedTotal) {
+            changeElement.textContent = `Change: ₱${(money - discountedTotal).toFixed(2)}`;
+        } else {
+            changeElement.textContent = 'Insufficient amount provided.';
+        }
+    }
+
+    function applyDiscount() {
+        const discountElement = document.getElementById('discount');
+        const discount = parseFloat(discountElement.value);
+        discountedTotal = total - (total * discount);
+        document.getElementById('total').textContent = discountedTotal.toFixed(2);
+    }
+</script>
+</body>
+</html>
+

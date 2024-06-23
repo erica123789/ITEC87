@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enriquez Final Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .welcome-animation {
+            animation: fadeIn 2s ease-out;
+        }
+        .font-white {
+            color: white;
+        }
+        body {
+            background-color: #f2f9f1; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .progress {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 50%;
+    background-color: transparent;
+    background-image: url('cct.jpg');
+    background-size: cover; 
+    background-position: center;
+}
+
+.progress-bar.animated {
+    animation: progressAnimation 2s linear;
+}
+
+@keyframes progressAnimation {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+
+        .bg-primary-custom {
+            background-color: #ddeedf; 
+            color: #ffffff; 
+        }
+
+        .jumbotron-custom {
+            background-color: #b6cdbd; 
+            color: #ffffff; 
+            padding: 40px; 
+        }
+
+        .btn-custom {
+            background-color: #ddeedf; 
+            color: #3f3f3f; 
+        }
+	.profile-pic {
+            width:200px;
+            height: 200px;
+            border: 2px solid #D5ACD1; 
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="progress">
+    <div class="progress-bar animated bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+
+<section class="jumbotron jumbotron-custom text-center" style="display: none;" id="dashboardSection">
+    <div class="container">
+        <h1 class="display-4 welcome-animation">Welcome to my Portfolio</h1>
+<img class="profile-pic img-fluid rounded-circle img-thumbnail" src="idpic.jpeg" alt="Erica Enriquez">
+
+      <p class="lead welcome-animation" style="font-size: 30px;">Hello, I am Erica Enriquez, a 3rd year College student taking a Bachelor of Science in Information Technology at City College of Tagaytay, and this is my project for ITEC87 - Fundamentals of Business.</p>
+    </div>
+    <div class="container mt-4">
+       <div class="row">
+     <div class="col-md-3 mb-3">
+       <a href="Enriquez_Resume/ENRIQUEZ_RESUMEWITHBOOTSTRAP.HTML" target="_blank" class="btn btn-primary btn-block btn-custom">Resume</a>
+    </div>
+
+     <div class="col-md-3 mb-3">
+       <a href="Enriquez_COR/Enriquez_COR.html" target="_blank" class="btn btn-primary btn-block btn-custom">Certificate Of Registration</a>
+    </div>
+     <div class="col-md-3 mb-3">
+       <a href="Enriquez_restaurantmenu/Enriquez_RestaurantMenu.html" target="_blank" class="btn btn-primary btn-block btn-custom">Restaurant Menu</a>
+    </div>
+     <div class="col-md-3 mb-3">
+       <a href="Enriquez_SariSariStore/Enriquez_SariSariStore.html" target="_blank" class="btn btn-primary btn-block btn-custom">Sari-Sari Store</a>
+    </div>
+</div>
+    </div>
+<br>
+<br>
+    <div class="container font-white">
+        <span class="text-muted">Contact: erica.enriquez@citycollegeoftagaytay.edu.ph | Follow me on <a href="https://www.facebook.com/erica.enriquez.1112">Facebook</a> </span>
+    </div>
+</section>
+
+<!-- Bootstrap Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    setTimeout(function() {
+        var progressBar = document.querySelector(".progress-bar");
+        progressBar.style.width = "100%";
+
+        setTimeout(function() {
+            var progressSection = document.querySelector(".progress");
+            var dashboardSection = document.querySelector("#dashboardSection");
+
+            progressSection.style.display = "none";
+            dashboardSection.style.display = "block";
+        }, 2000);
+    }, 2000); 
+
+
+    $(".project-btn").click(function(e) {
+        e.preventDefault();
+
+        var projectUrl = $(this).data("project");
+        $.ajax({
+            url: projectUrl,
+            success: function(response) {
+                $("#dashboardSection > .container > .row").hide();
+                $("#dashboardSection > .container").empty().append($('<div>', {class: 'project-content', html: response}));
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
